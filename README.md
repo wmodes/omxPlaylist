@@ -1,12 +1,12 @@
 # omxPlaylist
 ## About
-This project is designed to provide a mechanism for playing groups of media files (a directory of files) in sequence (a playlist) using Python and [OMXPlayer](https://github.com/popcornmix/omxplayer). It is meant to be used on a Raspberry PI running Debian Linux.
+A simple class-based media player to play media files in a playlist directory using Raspberry Pi's [omxplayer](https://github.com/popcornmix/omxplayer). It is meant to be used on a Raspberry PI running Debian Linux.
 
 Also provided is the ability to use `systemd` to auto-boot the playlist and install/uninstall scripts to make the setup easy.
 
 A secondary intention of this project is to provide a simple example of how to setup a Raspberry PI for use as a simple service provider (a media player). The files contained in this repo should be easy enough to modify in order to create any other type of service (e.g. DHCP server, MongoDB, APACHE web server).
 
-This is a fork of [omxPlaylist](https://github.com/sabjorn/omxPlaylist) with added loop and random options.
+This is a fork of [omxPlaylist](https://github.com/sabjorn/omxPlaylist) with OOP and added loop and random options.
 
 ## Usage
 This project used `systemd` to start `omxPlaylist.py` at startup. However, if the `install` script is not used, `omxPlaylist.py` can be run directly with:
@@ -18,12 +18,12 @@ python3 omxPlaylist.py [media_dir]
 ### Options
 
 ```
-usage: omxPlaylist.py [-h] [-l] [-r] [-d] ARG ...
+usage: omxplaylist.py [-h] [-l] [-r] [-d] playlist_dir ...
 
 Plays all of the media files in a directory with omxplayer.
 
 positional arguments:
-  ARG           pass ARG to the program
+  playlist_dir  specify playlist directory
   remaining     catch all other arguments to be passed to OMXplayer
 
 optional arguments:
@@ -33,7 +33,7 @@ optional arguments:
   -d, --debug   increase output verbosity
 ```
 
-### Install
+### Install as a Service
 To `install`, run:
 
 ```
