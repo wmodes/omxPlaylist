@@ -26,17 +26,22 @@ elif 'darwin' in platform.platform().lower():
 class OmxPlaylist(object):
     """Plays all of the media files in a directory with omxplayer."""
 
-    def __init__(self, playlistdir=None, random=False, loop=False, debug=False, omxoptions=[]):
+    def __init__(self, playlistdir=None, random=False, loop=False, autoplay=False, debug=False, omxoptions=[]):
         # constants - better to put in external config file
-        support_formats = [".3g2", ".3gp", ".aac", ".aiff", ".alac", ".ape", ".avi", ".dsd", ".flac", ".m4a", ".mj2", ".mkv", ".mov", ".mp3", ".mp4", ".mpc", ".mpeg", ".mqa", ".ofr", ".ogg", ".opus", ".wav", ".wv"]
+        self.support_formats = [".3g2", ".3gp", ".aac", ".aiff", ".alac", ".ape", ".avi", ".dsd", ".flac", ".m4a", ".mj2", ".mkv", ".mov", ".mp3", ".mp4", ".mpc", ".mpeg", ".mqa", ".ofr", ".ogg", ".opus", ".wav", ".wv"]
         # passed parameters
         self.playlistdir = playlistdir
         self.random = random
         self.loop = loop
         self.omxoptions = omxoptions
+        self.autoplay = autoplay
         self.debug = debug
         # create playlist
         self.generatePlaylist()
+        if autoplay:
+            self.play()
+
+    def play(self):
         # get started
         self.play_playlist()
         while self.loop:
@@ -44,7 +49,7 @@ class OmxPlaylist(object):
 
     def generatePlaylist(self):
         inpath = self.playlistdir
-        self.playlist = [f for f in listdir(inpath) if isfile(join(inpath, f)) and splitext(f)[1] in support_formats]
+        self.playlist = [f for f in listdir(inpath) if isfile(join(inpath, f)) and splitext(f)[1] in self.support_formats]
 
     def play_playlist(self):
         if self.random:
@@ -100,6 +105,12 @@ if __name__ == '__main__':
         const=True, default=False,
         help="increase output verbosity")
     parser.add_argument(
+        "-a",
+        "--autoplay",
+        dest='autoplay', action='store_const',
+        const=True, default=False,
+        help="start playing immediately")
+    parser.add_argument(
         'remaining',
         help="catch all other arguments to be passed to OMXplayer",
         nargs=argparse.REMAINDER)
@@ -113,4 +124,4 @@ if __name__ == '__main__':
 
     logging.basicConfig(format="%(levelname)s: %(message)s", level=loglevel)
 
-    player = OmxPlaylist(args.directory, args.random, args.loop, args.debug, args.remaining)
+    player = OmxPlaylist(args.directory, args.random, args.loop, args.autoplay, args.debug, args.remaining)

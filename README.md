@@ -15,22 +15,31 @@ This project used `systemd` to start `omxPlaylist.py` at startup. However, if th
 python3 omxPlaylist.py [media_dir]
 ```
 
+Or from within python:
+
+```
+>>> from omxplaylist import OmxPlaylist
+>>> player = OmxPlaylist("audio", random=True, loop=True, autoplay=False)
+>>> player.play()
+```
+
 ### Options
 
 ```
-usage: omxplaylist.py [-h] [-l] [-r] [-d] playlist_dir ...
+usage: omxplaylist.py [-h] [-l] [-r] [-d] [-a] playlist_dir ...
 
 Plays all of the media files in a directory with omxplayer.
 
 positional arguments:
-  playlist_dir  specify playlist directory
-  remaining     catch all other arguments to be passed to OMXplayer
+  playlist_dir    specify playlist directory
+  remaining       catch all other arguments to be passed to OMXplayer
 
 optional arguments:
-  -h, --help    show this help message and exit
-  -l, --loop    loop the playlist
-  -r, --random  play playlist in random order
-  -d, --debug   increase output verbosity
+  -h, --help      show this help message and exit
+  -l, --loop      loop the playlist
+  -r, --random    play playlist in random order
+  -d, --debug     increase output verbosity
+  -a, --autoplay  start playing immediately
 ```
 
 ### Install as a Service
