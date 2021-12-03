@@ -67,7 +67,7 @@ if __name__ == '__main__':
         '--loop',
         dest='loop', action='store_const',
         const=True, default=False,
-        help='loop')
+        help='loop the playlist')
     parser.add_argument(
         '-r',
         '--random',
