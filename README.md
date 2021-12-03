@@ -13,6 +13,12 @@ This project used `systemd` to start `omxPlaylist.py` at startup. However, if th
 python3 omxPlaylist.py [video_dir]
 ```
 
+### Options
+
+```
+
+```
+
 ### Install
 To `install`, run:
 
@@ -38,4 +44,3 @@ Importantly, the `omxPlaylist.service` (`systemd` service which runs the script 
 with whichever directory you wish to have your videos. Then, re-run the `install.sh` script.
 
 **Note**: For both `install.sh` and `uninstall.sh`, the `chmod` command is only required once.
-
