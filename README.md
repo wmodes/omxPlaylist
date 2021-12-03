@@ -16,7 +16,19 @@ python3 omxPlaylist.py [video_dir]
 ### Options
 
 ```
+usage: omxPlaylist.py [-h] [-l] [-r] [-d] ARG ...
 
+Plays all of the media files in a directory with omxplayer.
+
+positional arguments:
+  ARG           pass ARG to the program
+  remaining     catch all other arguments to be passed to OMXplayer
+
+optional arguments:
+  -h, --help    show this help message and exit
+  -l, --loop    loop the playlist
+  -r, --random  play playlist in random order
+  -d, --debug   increase output verbosity
 ```
 
 ### Install
