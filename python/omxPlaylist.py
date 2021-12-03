@@ -1,27 +1,25 @@
 #!/usr/bin/env python3
 #
+# adapted from https://github.com/sabjorn/omxPlaylist
 
 # import modules used here -- sys is a very standard one
-import sys, argparse, logging
+import sys, argparse, logging, random
 
 from os import listdir
 from os.path import isfile, join
 
 import subprocess
 
-omx_command = ['omxplayer', "-o", "hdmi", "-b"]
+#omx_command = ['omxplayer', "-o", "hdmi", "-b"]
+omx_command = ['omxplayer', "-o", "local", "-b"]
 
 
 def generatePlaylist(inpath):
     return [f for f in listdir(inpath) if isfile(join(inpath, f))]
 
-
-# Gather our code in a main() function
-def main(args, loglevel):
-    logging.basicConfig(format="%(levelname)s: %(message)s", level=loglevel)
-
-    #[omx_command.append(f) for f in args.remaining] # add extra OMX commands to end, sort of janky
-    playlist = generatePlaylist(args.directory)
+def play_playlist(args, playlist):
+    if args.random:
+        random.shuffle(playlist)
 
     for f in playlist:
         full_path = args.directory + "/" + f
@@ -43,6 +41,19 @@ def main(args, loglevel):
         except Exception as e:
             logging.exception()
 
+
+# Gather our code in a main() function
+def main(args, loglevel):
+    logging.basicConfig(format="%(levelname)s: %(message)s", level=loglevel)
+
+    #[omx_command.append(f) for f in args.remaining] # add extra OMX commands to end, sort of janky
+    playlist = generatePlaylist(args.directory)
+
+    play_playlist(args, playlist)
+    while args.loop:
+        play_playlist(args, playlist)
+
+
 # Standard boilerplate to call the main() function to begin
 # the program.
 if __name__ == '__main__':
@@ -51,6 +62,18 @@ if __name__ == '__main__':
         epilog="As an alternative to the commandline, params can be placed in a file, one per line, and specified on the commandline like '%(prog)s @params.conf'.",
         fromfile_prefix_chars='@')
     # TODO Specify your real parameters here.
+    parser.add_argument(
+        '-l',
+        '--loop',
+        dest='loop', action='store_const',
+        const=True, default=False,
+        help='loop')
+    parser.add_argument(
+        '-r',
+        '--random',
+        dest='random', action='store_const',
+        const=True, default=False,
+        help='play playlist in random order')
     parser.add_argument(
         "directory",
         help="pass ARG to the program",
